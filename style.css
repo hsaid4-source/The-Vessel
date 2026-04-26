@@ -1,0 +1,147 @@
+/* ── RESET & BASE ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── UTILITY ── */
+.hidden {
+  display: none;
+}
+
+/* ── INTRO SCREEN ── */
+#intro-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+  padding: 40px;
+}
+
+.intro-line {
+  font-size: 18px;
+  color: #aaa;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+  letter-spacing: 0.05em;
+}
+
+#line1 { animation-delay: 1s; }
+#line2 { animation-delay: 3.5s; }
+#line3 { animation-delay: 7s; }
+
+/* ── VESSEL PREVIEW ── */
+#vessel-preview {
+  width: 80px;
+  height: 120px;
+  border: 1px solid #333;
+  border-radius: 50% 50% 40% 40%;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+  animation-delay: 5s;
+  position: relative;
+  overflow: hidden;
+}
+
+#vessel-preview::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: #1a1a2e;
+  transition: height 2s ease;
+}
+
+/* ── TITLE ── */
+#game-title {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  color: #fff;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+  animation-delay: 9s;
+}
+
+/* ── BUTTONS ── */
+button {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 12px 40px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 10s;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+/* ── CHARACTER CREATION ── */
+#creation-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  padding: 40px;
+  animation: fadeIn 1s forwards;
+}
+
+#creation-screen h2 {
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  color: #aaa;
+  font-weight: 400;
+}
+
+input, select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #444;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  padding: 10px 4px;
+  width: 280px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+  border-bottom-color: #fff;
+}
+
+select option {
+  background: #111;
+  color: #fff;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

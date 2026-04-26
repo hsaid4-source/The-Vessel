@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Vessel</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <!-- OPENING SEQUENCE -->
+    <div id="intro-screen">
+      <p class="intro-line" id="line1">We've been building a copy of you your whole life.</p>
+      <p class="intro-line" id="line2">This is what we have so far.</p>
+      <div id="vessel-preview"></div>
+      <p class="intro-line" id="line3">Let's see how much more you give us.</p>
+      <h1 id="game-title">THE VESSEL</h1>
+      <button id="start-btn">Begin</button>
+    </div>
+
+    <!-- CHARACTER CREATION -->
+    <div id="creation-screen" class="hidden">
+      <h2>Who are you?</h2>
+      <input type="text" id="player-name" placeholder="Enter your name" />
+      <select id="player-ethnicity">
+        <option value="">Select your background</option>
+        <option value="black">Black / African American</option>
+        <option value="white">White / Caucasian</option>
+        <option value="hispanic">Hispanic / Latino</option>
+        <option value="asian">Asian / Pacific Islander</option>
+        <option value="middleeastern">Middle Eastern / North African</option>
+        <option value="indigenous">Indigenous / Native American</option>
+        <option value="mixed">Mixed / Multiracial</option>
+        <option value="other">Other</option>
+      </select>
+      <button id="confirm-btn">This is me</button>
+    </div>
+
+    <!-- GAME SCREEN (empty for now) -->
+    <div id="game-screen" class="hidden">
+      <p>Game loads here.</p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
