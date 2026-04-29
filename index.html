@@ -36,11 +36,77 @@
       <button id="confirm-btn">This is me</button>
     </div>
 
-    <!-- GAME SCREEN (empty for now) -->
-    <div id="game-screen" class="hidden">
-      <p>Game loads here.</p>
+<!-- GAME SCREEN -->
+<div id="game-screen" class="hidden">
+
+  <!-- TOP BAR -->
+  <div id="top-bar">
+    <span id="day-label">DAY 1 — CHILDHOOD</span>
+    <span id="vessel-label">VESSEL: <span id="vessel-percent">0</span>%</span>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="main-layout">
+
+    <!-- LEFT: SCENE -->
+    <div id="scene-panel">
+      <p id="scene-text"></p>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <!-- RIGHT: STATS + VESSEL -->
+    <div id="stats-panel">
+
+      <div class="stat-row">
+        <span class="stat-label">🍽 Hunger</span>
+        <div class="stat-bar-bg">
+          <div class="stat-bar" id="bar-hunger"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">😊 Happiness</span>
+        <div class="stat-bar-bg">
+          <div class="stat-bar" id="bar-happiness"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">❤️ Health</span>
+        <div class="stat-bar-bg">
+          <div class="stat-bar" id="bar-health"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">🧠 Stress</span>
+        <div class="stat-bar-bg">
+          <div class="stat-bar-stress" id="bar-stress"></div>
+        </div>
+      </div>
+
+      <!-- VESSEL OUTLINE -->
+      <div id="vessel-container">
+        <div id="vessel-body">
+          <div id="vessel-fill"></div>
+        </div>
+        <p id="vessel-tag">THE VESSEL</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM: DECISION BOX -->
+  <div id="decision-box">
+    <p id="decision-text"></p>
+    <div id="choice-buttons">
+      <button class="choice-btn" id="choice-a"></button>
+      <button class="choice-btn" id="choice-b"></button>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
 </html>
+
