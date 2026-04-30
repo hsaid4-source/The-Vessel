@@ -12,7 +12,111 @@ const choiceA        = document.getElementById('choice-a')
 const choiceB        = document.getElementById('choice-b')
 const vesselPercent  = document.getElementById('vessel-percent')
 const vesselFill     = document.getElementById('vessel-fill')
+// ── ADD FLASH OVERLAY TO BODY ──
+const flashOverlay = document.createElement('div')
+flashOverlay.id = 'flash-overlay'
+document.body.appendChild(flashOverlay)
 
+// ── ADD KEY MOMENT OVERLAY TO BODY ──
+document.body.insertAdjacentHTML('beforeend', `
+  <div id="key-moment-overlay">
+    <span class="warning-symbol">— KEY MOMENT —</span>
+    <h2 class="warning-title">CHOOSE CAREFULLY</h2>
+    <p class="warning-sub">What happens next shapes who you become.<br>There is no perfect answer.</p>
+    <button id="key-moment-btn">I UNDERSTAND</button>
+  </div>
+`)
+
+// ── ADD DAY TRANSITION TO BODY ──
+document.body.insertAdjacentHTML('beforeend', `
+  <div id="day-transition">
+    <span id="day-transition-text"></span>
+  </div>
+`)
+
+// ── TYPEWRITER EFFECT ──
+function typeText(element, text, speed, callback) {
+  element.textContent = ''
+  let i = 0
+  const timer = setInterval(function() {
+    element.textContent += text[i]
+    i++
+    if (i >= text.length) {
+      clearInterval(timer)
+      if (callback) callback()
+    }
+  }, speed || 18)
+}
+
+// ── SCREEN FLASH ──
+function flashScreen(color, intensity) {
+  flashOverlay.style.background = color || 'rgba(139,0,0,0.15)'
+  flashOverlay.style.opacity = intensity || '1'
+  setTimeout(() => { flashOverlay.style.opacity = '0' }, 80)
+}
+
+// ── VESSEL PULSE ──
+function pulseVessel() {
+  const vessel = document.getElementById('vessel-body')
+  vessel.style.animation = 'none'
+  vessel.offsetHeight
+  vessel.style.animation = 'vesselGrow 1.5s ease forwards'
+}
+
+// ── UPDATE STAT BARS WITH COLOR ──
+function updateStats() {
+  const stats = [
+    { id: 'bar-hunger',    val: player.hunger },
+    { id: 'bar-happiness', val: player.happiness },
+    { id: 'bar-health',    val: player.health },
+  ]
+
+  stats.forEach(function(s) {
+    const bar = document.getElementById(s.id)
+    bar.style.width = s.val + '%'
+    if (s.val > 60)      { bar.style.background = '#2d6a2d' }
+    else if (s.val > 30) { bar.style.background = '#8b6914' }
+    else                  { bar.style.background = '#8b0000' }
+  })
+
+  const stressBar = document.getElementById('bar-stress')
+  stressBar.style.width = player.stress + '%'
+  stressBar.style.background = player.stress > 60 ? '#8b0000' : '#5a2d2d'
+
+  vesselPercent.textContent = player.vessel
+  vesselFill.style.height   = player.vessel + '%'
+
+  const vesselBody = document.getElementById('vessel-body')
+  if (player.vessel > 0) {
+    const glow = Math.min(player.vessel * 0.4, 20)
+    vesselBody.style.boxShadow = `0 0 ${glow}px rgba(139,0,0,0.6), inset 0 0 ${glow/2}px rgba(139,0,0,0.2)`
+  }
+}
+
+// ── DAY TRANSITION ANIMATION ──
+function dayTransition(label, callback) {
+  const overlay = document.getElementById('day-transition')
+  const text    = document.getElementById('day-transition-text')
+  text.textContent = label
+  overlay.classList.add('active')
+  setTimeout(function() {
+    overlay.classList.remove('active')
+    setTimeout(callback, 400)
+  }, 1200)
+}
+
+// ── KEY MOMENT SCREEN ──
+function showKeyMoment(callback) {
+  const overlay = document.getElementById('key-moment-overlay')
+  const btn     = document.getElementById('key-moment-btn')
+  overlay.classList.add('active')
+  flashScreen('rgba(139,0,0,0.2)')
+
+  btn.onclick = function() {
+    overlay.classList.remove('active')
+    setTimeout(callback, 500)
+  }
+}
 // ── PLAYER DATA ──
 let player = {
   name:      '',
@@ -60,24 +164,39 @@ function updateStats() {
 
 // ── SET SCENE ──
 function setScene(scene, decision, btnA, btnB) {
-  sceneText.textContent    = scene
-  decisionText.textContent = decision
-  choiceA.textContent      = btnA
-  choiceB.textContent      = btnB
-  choiceA.classList.remove('hidden')
-  choiceB.classList.remove('hidden')
+  choiceA.classList.add('hidden')
+  choiceB.classList.add('hidden')
+  decisionText.textContent = ''
+
+  typeText(sceneText, scene, 18, function() {
+    setTimeout(function() {
+      typeText(decisionText, decision, 14, function() {
+        choiceA.textContent = btnA
+        choiceB.textContent = btnB
+        choiceA.classList.remove('hidden')
+        choiceB.classList.remove('hidden')
+      })
+    }, 300)
+  })
 }
 
 // ── SHOW OUTCOME THEN CONTINUE ──
 function showOutcome(outcomeText, nextFn) {
-  sceneText.textContent    = outcomeText
   decisionText.textContent = ''
   choiceA.classList.add('hidden')
-  choiceB.classList.remove('hidden')
-  choiceB.textContent = 'CONTINUE →'
-  choiceB.onclick = function() {
-    nextFn()
-  }
+  choiceB.classList.add('hidden')
+  flashScreen('rgba(255,255,255,0.04)')
+
+  typeText(sceneText, outcomeText, 22, function() {
+    setTimeout(function() {
+      choiceB.classList.remove('hidden')
+      choiceB.textContent = 'CONTINUE →'
+      choiceB.onclick = function() {
+        const label = document.getElementById('day-label').textContent
+        dayTransition(label.split('—')[0].trim(), nextFn)
+      }
+    }, 800)
+  })
 }
 
 // ══════════════════════════════════════
@@ -183,21 +302,9 @@ function loadDay2() {
 // ══════════════════════════════════════
 function loadDay3() {
   document.getElementById('day-label').textContent = 'DAY 3 — CHILDHOOD'
-
-  // Key life choice — show warning first
-  sceneText.textContent =
-    "⚠ KEY MOMENT\n\n" +
-    "What happens today will shape who your character becomes. " +
-    "Choose carefully."
-
-  decisionText.textContent = ''
-  choiceA.classList.add('hidden')
-  choiceB.textContent = 'I UNDERSTAND →'
-  choiceB.classList.remove('hidden')
-
-  choiceB.onclick = function() {
-    loadDay3Choice()
-  }
+  dayTransition('DAY 3', function() {
+    showKeyMoment(loadDay3Choice)
+  })
 }
 
 function loadDay3Choice() {
